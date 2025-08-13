@@ -5,7 +5,7 @@ import { z } from 'zod';
 import slugify from 'slugify';
 
 // Skema untuk gambar produk (sama seperti di frontend)
-export const productImageSchema = z.object({
+ const productImageSchema = z.object({
   url: z.string().url("URL gambar tidak valid."),
   publicId: z.string().min(1, "Public ID diperlukan."),
 });
