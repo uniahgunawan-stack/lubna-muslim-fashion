@@ -4,7 +4,6 @@ import {  getProductBySlug } from "@/actions/get-products";
 import ReviewSlider from "@/components/gallery/reviews";
 import { SiteFooter } from "@/components/(tampilan)/Footer";
 import Container from "@/components/ui/container";
-import { Separator } from "@radix-ui/react-select";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { FaWhatsapp } from "react-icons/fa";
 import { rP } from "@/lib/utils";

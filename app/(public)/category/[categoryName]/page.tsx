@@ -9,9 +9,9 @@ import { getServerSession } from "next-auth";
 import ProductCard from "@/components/ui/productCard";
 
 interface CategoryPageProps {
-  params: {
+  params: Promise<{
     categoryName: string;
-  };
+  }>;
 }
 
 export default async function CategoryPage({ params }: CategoryPageProps) {
