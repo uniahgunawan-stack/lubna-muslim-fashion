@@ -4,12 +4,13 @@ import prisma from '@/lib/prisma';
 import cloudinary from '@/lib/cloudinary';
 
 interface Context {
-  params: { id: string };
+  params:Promise< { id: string }>
 }
 
 export async function DELETE(req: Request, { params }: Context) {
+  const { id } =await params;
   try {
-    const { id } = params;
+    
     
     const review = await prisma.review.findUnique({
       where: { id },
