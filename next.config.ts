@@ -1,7 +1,20 @@
-import type { NextConfig } from "next";
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  allowedDevOrigins: ['http://192.168.1.10:3000', 'http://192.168.1.10:3000'],
 
-const nextConfig: NextConfig = {
-  /* config options here */
+  env: {
+    JWT_SECRET: process.env.JWT_SECRET,
+  },
+
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'res.cloudinary.com',
+        pathname: '/**',
+      },
+    ],
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
