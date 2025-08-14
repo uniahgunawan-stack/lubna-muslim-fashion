@@ -57,7 +57,7 @@ export default function ReviewSlider({ reviews }: ReviewSliderProps) {
             </div>
 
             {/* Comment */}
-            <p className="mb-4 text-gray-700 border-b-1">{review.comment}</p>
+            <p className="mb-4 text-gray-700 border-b">{review.comment}</p>
 
             {/* Images */}
             {review.images.length > 0 && (

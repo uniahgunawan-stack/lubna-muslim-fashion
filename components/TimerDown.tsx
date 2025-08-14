@@ -77,15 +77,13 @@ export function CountdownTimer({ className }: CountdownTimerProps) {
         <p className="text-2xl md:text-3xl font-bold text-red-500">
           {String(timeLeft[interval as keyof TimeLeft]).padStart(2, '0')}
         </p>
-        <p className="text-xs md:text-sm text-muted-foreground">
-          {interval.charAt(0).toUpperCase() + interval.slice(1)}
-        </p>
+        
       </div>
     );
 
     if (idx < intervals.length - 1) {
       timerComponents.push(
-        <span key={`colon-${idx}`} className="text-2xl mb-6 font-bold text-red-500 px-1">
+        <span key={`colon-${idx}`} className="text-2xl font-bold text-red-500 px-1">
           :
         </span>
       );

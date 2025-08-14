@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { ProductTransformed } from "@/actions/get-products";
 import FavoriteButton from "@/components/ui/FavoritButton";
 import { Star } from "lucide-react";
+import { useState } from "react";
 
 interface ProductCardProps {
     data: ProductTransformed
@@ -15,14 +16,26 @@ interface ProductCardProps {
 
 const ProductCard: React.FC<ProductCardProps> = ({data, isInitialFavorite, userRole}) => {
     const router = useRouter();
-    const handleProductClick = () => router.push(`/products/${data?.slug}`);
-     const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.stopPropagation();}
+    const [isNavigating, setIsNavigating] = useState(false);
+
+    const handleProductClick = () => {
+        setIsNavigating(true);
+        router.push(`/products/${data?.slug}`);
+    };
+
+    const handleFavoriteClick = (e: React.MouseEvent) => {
+        e.stopPropagation();
+    };
+
     return (
-        <div className="bg-white group rounded-sm border overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col">
-            <div onClick={handleProductClick} className="flex-grow  cursor-pointer">
-                {/* Gambar */}
-                <div className="aspect-square bg-gray-100 relative w-full h-[100] overflow-hidden">
+        <div 
+            className={cn(
+                "bg-white group rounded-sm border overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 flex flex-col",
+                isNavigating && "opacity-50 pointer-events-none" // ⬅ efek loading
+            )}
+        >
+            <div onClick={handleProductClick} className="flex-grow cursor-pointer relative">
+                <div className="aspect-square bg-gray-100 relative w-full overflow-hidden">
                     <Image
                         alt="Gambar product"
                         src={data?.images?.[0].url}
@@ -32,18 +45,22 @@ const ProductCard: React.FC<ProductCardProps> = ({data, isInitialFavorite, userR
                         priority={true}
                     />
                     <div onClick={handleFavoriteClick}>
-                    <FavoriteButton
-                    productId={data.id}
-                    isInitialFavorite={isInitialFavorite}
-                    userRole={userRole as "USER" | "ADMIN" | "GUEST"}/>
+                        <FavoriteButton
+                            productId={data.id}
+                            isInitialFavorite={isInitialFavorite}
+                            userRole={userRole as "USER" | "ADMIN" | "GUEST"}
+                        />
                     </div>
+                    {isNavigating && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+                            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        </div>
+                    )}
                 </div>
-                {/* Nama Produk */}
                 <h3 className="text-lg md:text-base lg:text-lg px-2 mt-2 font-semibold text-start text-gray-900 dark:text-gray-100 line-clamp-1 hover:text-green-600 transition-colors duration-200">
                     {data.name}
                 </h3>
-                {/* Rating */}
-                <div className="flex   items-center px-2 gap-1">
+                <div className="flex items-center px-2 gap-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                             key={i}
@@ -59,7 +76,6 @@ const ProductCard: React.FC<ProductCardProps> = ({data, isInitialFavorite, userR
                 </div>
             </div>
 
-            {/* Bagian Harga dan Tombol Favorit (di luar div navigasi) */}
             <div className="flex mb-2 py-2 flex-row items-center text-xs md:text-base lg:text-lg px-2 gap-2">
                 {data.price && (
                     <span className="text-gray-500 line-through">
@@ -69,7 +85,6 @@ const ProductCard: React.FC<ProductCardProps> = ({data, isInitialFavorite, userR
                 <span className="text-red-600 md:text-lg font-bold">
                     <Currency value={data.discountPrice} />
                 </span>
-                
             </div>
         </div>
     )

@@ -132,7 +132,7 @@ export default function Header({ categories, session }: HeaderProps) {
                   )}
                   {role === "ADMIN" && (
                     <Link
-                      href="/dashboard"
+                      href="/dasboard"
                       className="ml-2 text-lg flex items-center font-medium hover:text-primary transition-colors"
                     >
                       <LayoutDashboard className="mr-2 text-blue-500"/> Dashboard

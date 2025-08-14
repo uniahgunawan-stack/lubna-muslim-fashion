@@ -1,9 +1,9 @@
 "use server";
-
-import prisma from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
 export type ProductImage = Prisma.ProductImageGetPayload<{}>;
 export type ReviewImage = Prisma.ReviewImageGetPayload<{}>;
+import prisma from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
+
 export type Review = Prisma.ReviewGetPayload<{
   include: { images: true };
 }>;

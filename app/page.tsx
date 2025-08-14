@@ -10,6 +10,8 @@ import IconWhatsapp from "@/components/ui/icon-wa";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 
+export const revalidate = 60;
+
 export default async function Home() {
   const categories = await getCategory();
   const session = await getServerSession(authOptions);

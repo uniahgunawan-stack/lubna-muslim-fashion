@@ -9,11 +9,9 @@ import { FaWhatsapp } from "react-icons/fa";
 import { rP } from "@/lib/utils";
 import StickyHeader from "@/components/(tampilan)/StickyHeader";
 import ProductSection from "@/components/(public)/ProductSection";
-import Link from "next/link";
-import { Home } from "lucide-react";
 import { CountdownTimer } from "@/components/TimerDown";
 
-export const revalidate = 0
+export const revalidate = 60;
 
 interface DetailProductPageProps {
   params: Promise<{ slug: string }>;
@@ -105,14 +103,14 @@ ${productUrl}`;
             </div>
         <ProductSection />
         </section>
-        <Link 
+     {/*    <Link 
         href="/"
         target="blank"
         
         ><span className="flex flex-nowrap text-xs justify-center md:text-sm text-blue-600 mb-4">
           <Home className="mr-2" />Kembali beranda
-          </span>
-        </Link>
+          </span> 
+        </Link>*/}
       </Container>
     </div>
     <SiteFooter/>

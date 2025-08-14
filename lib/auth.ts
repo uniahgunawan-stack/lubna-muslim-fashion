@@ -9,7 +9,7 @@ export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   session: {
     strategy: "jwt",
-    maxAge: 30 * 24 * 60 * 60,
+    maxAge: 30 * 24 * 60 * 60, // 30 hari
   },
   providers: [
     GoogleProvider({
@@ -23,25 +23,16 @@ export const authOptions: AuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          console.log("No credentials provided");
-          return null;
-        }
+        if (!credentials?.email || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
-        if (!user || !user.password) {
-          console.log("User not found or no password:", credentials.email);
-          return null;
-        }
+        if (!user || !user.password) return null;
 
         const valid = await bcrypt.compare(credentials.password, user.password);
-        if (!valid) {
-          console.log("Invalid password for:", credentials.email);
-          return null;
-        }
+        if (!valid) return null;
 
         return {
           id: user.id,
@@ -57,73 +48,50 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
-  if (user) {
-    token.role = user.role || "USER";
-    token.id = user.id;
-    console.log("JWT callback - Role assigned:", token.role);
-  }
+      // Saat login pertama kali
+      if (user) {
+        token.id = user.id;
+        token.role = user.role || "USER";
+        token.lastDbCheck = Date.now(); // waktu terakhir cek DB
+      }
 
-  if (!token.id || typeof token.id !== "string") {
-    console.log("JWT callback - Invalid token.id");
-    return { ...token, id: "", role: "USER" };
-  }
+      // Cek DB tiap 5 menit sekali (bukan tiap request)
+      const FIVE_MINUTES = 5 * 60 * 1000;
+      if (!token.lastDbCheck || Date.now() - token.lastDbCheck > FIVE_MINUTES) {
+        const existingUser = await prisma.user.findUnique({
+          where: { id: token.id as string },
+        }).catch(() => null);
 
-  const existingUser = await prisma.user.findUnique({
-    where: { id: token.id },
-  }).catch((error) => {
-    console.error("Database error:", error)
-    return null;
-  });
+        token.lastDbCheck = Date.now();
 
-  if (!existingUser) {
-    console.log("JWT callback - User not found in DB, clearing token");
-    return { ...token, id: "", role: "USER" };
-  }
+        if (!existingUser) {
+          // user sudah dihapus → reset token supaya logout
+          token.id = "";
+          token.role = "USER";
+          token.invalid = true;
+        }
+      }
 
-  return token;
-},
+      return token;
+    },
 
     async session({ session, token }) {
-
-        if (!token.id || typeof token.id !== "string"){
-
-          console.log("session callback -Toen invalid, return null")
-          return {
-        ...session,
-        user: {
-          id: "",
-          name: "",
-          email: "",
-          role: "USER",
-        },
-      };
-    }
-
-        const existingUser = await prisma.user.findUnique({
-      where: { id: token.id as string },
-    }).catch((error) => {
-      console.error("Database error", error)
-      return null;
-    })
-
-    if (!existingUser) {
-      console.log("Session callback - User not found in DB, returning null");
-       return {
-        ...session,
-        user: {
-          id: "",
-          name: "",
-          email: "",
-          role: "USER",
-        },
-      };
-    };
-
+      if (token.invalid) {
+        // Reset session jadi kosong
+        return {
+          ...session,
+          user: {
+            id: "",
+            name: "",
+            email: "",
+            role: "USER",
+          },
+        };
+      }
 
       if (session.user) {
         session.user.id = token.id as string;
-        session.user.role = ["ADMIN", "USER"].includes(token.role) ? token.role : "USER";
-        console.log("Session callback - Session updated:");
+         session.user.role = token.role === "ADMIN" ? "ADMIN" : "USER";
       }
       return session;
     },

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import ProductList from '@/components/ProductList';
 import { getProducts, ProductTransformed } from '@/actions/get-products';
+import { getFavorites } from "@/actions/get-favorits"; 
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { capitalize } from "@/lib/utils";
 
@@ -30,6 +31,15 @@ export default function FilteredProductDisplay({
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isLoading, setIsLoading] = useState(false);
   const [hasMore, setHasMore] = useState(initialProducts.length === INITIAL_LIMIT);
+   const [favorites, setFavorites] = useState<string[]>(favoriteProductIds);
+
+   useEffect(() => {
+    if (userRole === "USER") {
+      getFavorites().then((res) => {
+        setFavorites(res.map(p => p.id));
+      }).catch(err => console.error("Failed to load favorites", err));
+    }
+  }, [userRole]);
 
   const loadProducts = async (isNewFilter = false) => {
     setIsLoading(true);
@@ -80,7 +90,7 @@ export default function FilteredProductDisplay({
       <ProductList
         products={products}
         userRole={userRole}
-        favoriteProductIds={favoriteProductIds}
+        favoriteProductIds={favorites}
         onLoadMore={() => loadProducts()}
         hasMore={hasMore}
         isLoading={isLoading}

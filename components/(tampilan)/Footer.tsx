@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-import { FaWhatsapp,FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
+import { FaFacebook, FaInstagram, FaTiktok } from "react-icons/fa";
 
   
-  const whatsappMessage = `Halo, saya tertarik dengan produk dari website anda.`;
-  const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER; 
-  const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
+//  const whatsappMessage = `Halo, saya tertarik dengan produk dari website anda.`;
+//  const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER; 
+//  const whatsappLink = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(whatsappMessage)}`;
   const instagramUrl = process.env.NEXT_PUBLIC_INSTAGRAM_URL || '#';
   const facebookUrl = process.env.NEXT_PUBLIC_FACEBOOK_URL || '#';
   const tiktokUrl = process.env.NEXT_PUBLIC_TIKTOK_URL || '#';
@@ -32,14 +32,14 @@ export function SiteFooter() {
             </div>
         </div>
          <div className="flex flex-col md:flex-wrap justify-center items-center">
-          <div className="texr-sm text-muted-foreground mb-4">Hubungi Kami</div>
+          <div className="texr-sm text-muted-foreground mb-4">Ikuti Kami</div>
               <div className="flex  justify-center items-center md:justify-start space-x-4">
-                <Link href={whatsappLink}  target="_blank" rel="noopener noreferrer" className="" >
+               {/* <Link href={whatsappLink}  target="_blank" rel="noopener noreferrer" className="" >
                 <button 
                 className="bg-transparent hover:bg-transparent">
                   <FaWhatsapp  className="h-10 w-10" />
                 </button>
-              </Link>
+              </Link> */}
                 <Link href={facebookUrl} target="_blank" rel="noopener noreferrer" aria-label="Facebook" className="h-10 w-10 object-contain">
               <FaFacebook size={34} />
             </Link>

@@ -220,7 +220,7 @@ export default function BannerAdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen max-w-7xl mx-auto bg-gray-50 dark:bg-gray-950 p-4 sm:p-6 lg:p-8">
       {/* HEADER DAN FORM */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4 sm:gap-0">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
@@ -246,19 +246,19 @@ export default function BannerAdminPage() {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <Label htmlFor="image" className="cursor-pointer">
-                <div className="border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-md p-4 flex flex-col items-center justify-center text-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
+                <div className="border-2 overflow-hidden border-dashed relative w-full h-90 md:h-150 border-gray-300 dark:border-gray-700 rounded-md p-0 flex flex-col items-center justify-center text-center hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors">
                     {imagePreview ? (
                         <Image
                             src={imagePreview}
                             alt="Preview"
-                            width={30}
-                            height={30}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 33vw"
                             className="object-cover rounded-md"
                         />
                     ) : (
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 h-30 w-50">
                             <ImagePlus className="h-10 w-10 text-gray-500" />
-                            <span className="text-gray-500 text-lg">Pilih Gambar Banner</span>
+                            <span className="text-gray-500 text-sm">Pilih Gambar Banner</span>
                         </div>
                     )}
                 </div>
@@ -273,12 +273,13 @@ export default function BannerAdminPage() {
               {editingBannerId && !selectedImage && imagePreview && (
                 <p className="text-sm text-gray-500 mt-2">
                   * Biarkan kosong jika tidak ingin mengubah gambar.
+                  
                 </p>
               )}
             </div>
             <div>
-              <Label htmlFor="description">Deskripsi Banner</Label>
-              <p className="text-sm text-gray-500 text-right mt-1">
+              <Label htmlFor="description mt-2 ">Deskripsi Banner</Label>
+              <p className="text-sm text-gray-500 text-right mt-2">
                 {description.length} / 125
               </p>
               <Textarea

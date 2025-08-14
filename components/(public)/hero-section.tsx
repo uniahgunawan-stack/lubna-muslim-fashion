@@ -9,7 +9,7 @@ export default async function HeroSection() {
   return (
     <section className="bg-[radial-gradient(circle,_#FFF5E1,_#FAF9F6)] bg-background-alt-1 rounded-lg shadow-inner">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center">
-            <div className="items-center mt-0 mt:mt-4 ml-0 lg:ml-20 sm:ml-0 h-[300px] overflow-hidden md:h-[400px] lg:h-[480px]">                
+            <div className="items-center mt-0 mt:mt-4 ml-0 lg:ml-20 sm:ml-0 h-[400px] overflow-hidden md:h-[500px] lg:h-[480px]">                
                 {banners.length > 0 ? (
                 <BannerSlider banners={banners} />
                   ) : (
@@ -18,7 +18,7 @@ export default async function HeroSection() {
                     </div>
                   )}
             </div>
-            <div className="text-center mt-25 sm:mt-10 lg:mt-0 lg:text-left p-4">
+            <div className="text-center mt-2 lg:mt-0 lg:text-left p-4">
           <h1 className="text-lg md:text-2xl font-bold mb-4 ">
             Selamat Datang di Lubna Fashion
           </h1>
