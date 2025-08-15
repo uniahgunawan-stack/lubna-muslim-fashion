@@ -5,18 +5,18 @@ export interface UploadedImage {
 }
 
 export const uploadImageToCloudinary = async (file: File, folder: string): Promise<UploadedImage> => {
-  if (!process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || !process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME) {
+  if (!process.env.CLOUDINARY_UPLOAD_PRESET || !process.env.CLOUDINARY_CLOUD_NAME) {
     throw new Error('Variabel lingkungan Cloudinary tidak diatur.');
   }
 
   const formData = new FormData();
   formData.append('file', file);
-  formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET);
+  formData.append('upload_preset', process.env.CLOUDINARY_UPLOAD_PRESET);
   formData.append('folder', folder);
 
   try {
     const res = await fetch(
-      `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+      `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_CLOUD_NAME}/image/upload`,
       { method: 'POST', body: formData }
     );
 
