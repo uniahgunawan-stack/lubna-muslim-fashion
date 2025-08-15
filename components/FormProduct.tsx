@@ -111,7 +111,7 @@ export default function FormProduct() {
       }
 
       const imageUrls: ProductImageUpload[] = await Promise.all(
-        images.map((file) => uploadImageToCloudinary(file, 'Imagelubna'))
+        images.map((file) => uploadImageToCloudinary(file, 'ImageKaira'))
       );
       
       const productData: NewProductFormType = { ...data, images: imageUrls };

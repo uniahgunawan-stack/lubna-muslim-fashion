@@ -175,7 +175,7 @@ export default function FormUlasan({
     setIsSubmitting(true);
     try {
       const uploadedImages = await Promise.all(
-        newReviewImageFiles.map(file => uploadImageToCloudinary(file, 'Imagelubna/reviews'))
+        newReviewImageFiles.map(file => uploadImageToCloudinary(file, 'ImageKaira/reviews'))
       );
       const finalImages = [...newReviewImagePreviews, ...uploadedImages];
       

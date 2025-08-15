@@ -149,7 +149,7 @@ export default function BannerAdminPage() {
         const formData = new FormData();
         formData.append('file', selectedImage);
         formData.append('upload_preset', process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET!);
-        formData.append('folder', 'Imagelubna/banners');
+        formData.append('folder', 'ImageKaira/banners');
 
         const res = await fetch(
           `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
