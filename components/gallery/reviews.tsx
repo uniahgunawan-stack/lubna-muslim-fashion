@@ -3,11 +3,12 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
-import { ArrowLeft, ArrowRight, Star } from "lucide-react";
+import { ArrowLeft, ArrowRight, Star, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+import { useState } from "react";
 
 interface ReviewImage {
   id: string;
@@ -26,6 +27,15 @@ interface ReviewSliderProps {
 }
 
 export default function ReviewSlider({ reviews }: ReviewSliderProps) {
+  const [zoomOpen, setZoomOpen] = useState(false);
+    const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+   const allReviewImages = reviews.flatMap((review) => review.images);
+   const handleImageClick = (imageIndex: number) => {
+    setCurrentImageIndex(imageIndex);
+    setZoomOpen(true);
+  };
+   
   return (
     <div className="px-0 relative w-full h-auto overflow-hidden">
       <Swiper
@@ -62,17 +72,29 @@ export default function ReviewSlider({ reviews }: ReviewSliderProps) {
             {/* Images */}
             {review.images.length > 0 && (
               <div className="relative w-full h-64 mb-4">
-                <Image
-                  src={review.images[0].url}
-                  alt="Review Image"
-                  fill
-                  priority={true}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover object-center rounded-lg"
-                />
+                {review.images.map((image, idx) => {
+                  // Find the global index of this image in allReviewImages
+                  const globalImageIndex = allReviewImages.findIndex(
+                    (img) => img.id === image.id
+                  );
+                  return (
+                    <div
+                      key={image.id}
+                      className="relative w-full h-full cursor-zoom-in rounded-lg overflow-hidden"
+                      onClick={() => handleImageClick(globalImageIndex)}
+                    >
+                      <Image
+                        src={image.url}
+                        alt={`Review Image ${idx + 1}`}
+                        fill
+                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 25vw, 20vw"
+                        className="object-contain object-center"
+                      />
+                    </div>
+                  );
+                })}
               </div>
-            )}
-            
+            )}            
           </SwiperSlide>
         ))}
       </Swiper>
@@ -94,6 +116,58 @@ export default function ReviewSlider({ reviews }: ReviewSliderProps) {
       >
         <ArrowRight className="h-8 w-8" />
       </Button>
+       {/* ZOOM MODAL */}
+      {zoomOpen && (
+        <div className="fixed inset-0 z-50 bg-black/90 flex flex-col items-center justify-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute top-4 right-4 text-white hover:bg-white/20"
+            onClick={() => setZoomOpen(false)}
+          >
+            <X className="h-8 w-8" />
+          </Button>
+          <Swiper
+            modules={[Navigation]}
+            spaceBetween={10}
+            navigation={{
+              prevEl: ".zoom-prev",
+              nextEl: ".zoom-next",
+            }}
+            initialSlide={currentImageIndex}
+            className="w-full max-w-5xl"
+          >
+            {allReviewImages.map((image) => (
+              <SwiperSlide key={image.id}>
+                <div className="relative w-full h-[80vh]">
+                  <Image
+                    src={image.url} // Perbaiki dari images.id ke image.
+                    alt="Zoom produk"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Tombol zoom nav */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="zoom-prev absolute left-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 rounded-full"
+          >
+            <ArrowLeft className="h-8 w-8" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="zoom-next absolute right-4 top-1/2 -translate-y-1/2 text-white hover:bg-white/20 rounded-full"
+          >
+            <ArrowRight className="h-8 w-8" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
