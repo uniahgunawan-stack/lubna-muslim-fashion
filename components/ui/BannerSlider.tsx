@@ -20,7 +20,7 @@ const BannerSlider: React.FC<BannerSliderProps> = ({ banners }) => {
     return null;
   }
  return(
-    <div className="px-0 relative w-full h-110 md:h-120 overflow-hidden">
+    <div className="px-0 relative w-full h-110 md:h-100 md:mt-4 overflow-hidden">
       <Swiper
         modules={[Pagination, Navigation]}
         spaceBetween={0}

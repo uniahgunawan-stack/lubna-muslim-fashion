@@ -7,7 +7,7 @@ import { Button } from '../ui/button';
 export default async function HeroSection() {
   const banners = await getBanners();
   return (
-    <section className="bg-[radial-gradient(circle,_#FFF5E1,_#FAF9F6)] bg-background-alt-1 rounded-lg shadow-inner">
+    <section className="bg-[radial-gradient(circle,_#FFF5E1,_#FAF9F6)] bg-background-alt-1 rounded-t-lg shadow-inner">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-20 items-center">
             <div className="items-center mt-0 mt:mt-4 ml-0 lg:ml-20 sm:ml-0 h-[400px] overflow-hidden md:h-[500px] lg:h-[480px]">                
                 {banners.length > 0 ? (
