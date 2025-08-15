@@ -169,7 +169,7 @@ export default function FormEditProduct({
       const newImageFiles = imagePreviews.filter(img => img.file);
 
       const newUploadedImages = await Promise.all(
-        newImageFiles.map(img => uploadImageToCloudinary(img.file!, 'ImageKaira'))
+        newImageFiles.map(img => uploadImageToCloudinary(img.file!, 'Imagelubna'))
       );
 
       const finalImages = [...existingImages, ...newUploadedImages];
