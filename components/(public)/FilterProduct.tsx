@@ -17,6 +17,7 @@ interface FilteredProductDisplayProps {
   userRole: "USER" | "ADMIN" | "GUEST";
   favoriteProductIds: string[];
   categories: Category[];
+  excludeSlug?: string; // Pastikan ini opsional, karena tidak selalu ada
 }
 
 const INITIAL_LIMIT = 4;
@@ -26,48 +27,65 @@ export default function FilteredProductDisplay({
   userRole,
   favoriteProductIds,
   categories,
+  excludeSlug,
 }: FilteredProductDisplayProps) {
   const [products, setProducts] = useState<ProductTransformed[]>(initialProducts);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isLoading, setIsLoading] = useState(false);
+  // State `skip` lebih baik daripada menghitung dari `products.length`
+  const [skip, setSkip] = useState(initialProducts.length);
   const [hasMore, setHasMore] = useState(initialProducts.length === INITIAL_LIMIT);
-   const [favorites, setFavorites] = useState<string[]>(favoriteProductIds);
+  const [favorites, setFavorites] = useState<string[]>(favoriteProductIds);
 
-   useEffect(() => {
+  useEffect(() => {
     if (userRole === "USER") {
       getFavorites().then((res) => {
         setFavorites(res.map(p => p.id));
-      }).catch(err => console.error("Failed to load favorites", err));
+      }).catch(err => console.error("Gagal memuat favorit:", err));
     }
   }, [userRole]);
 
   const loadProducts = async (isNewFilter = false) => {
     setIsLoading(true);
-    const querySkip = isNewFilter ? 0 : products.length;
+
+    // Tentukan jumlah yang akan dilewati berdasarkan apakah ini filter baru
+    const querySkip = isNewFilter ? 0 : skip;
+
     const categoryQuery = selectedCategory === "all" ? undefined : selectedCategory;
 
-    const newProducts = await getProducts({
-      limit: INITIAL_LIMIT,
-      skip: querySkip,
-      orderBy: "createdAt",
-      orderDirection: "desc",
-      category: categoryQuery,
-    });
+    try {
+      const newProducts = await getProducts({
+        limit: INITIAL_LIMIT,
+        skip: querySkip,
+        excludeSlug: excludeSlug, // Ini adalah perbaikan utama!
+        orderBy: "createdAt",
+        orderDirection: "desc",
+        category: categoryQuery,
+      });
 
-    if (isNewFilter) {
-      setProducts(newProducts);
-    } else {
-      setProducts(prevProducts => [...prevProducts, ...newProducts]);
+      if (isNewFilter) {
+        setProducts(newProducts);
+        // Atur `skip` awal setelah filter baru
+        setSkip(newProducts.length);
+      } else {
+        setProducts(prevProducts => [...prevProducts, ...newProducts]);
+        // Tambahkan jumlah produk baru ke `skip` saat memuat lebih banyak
+        setSkip(prevSkip => prevSkip + newProducts.length);
+      }
+      
+      setHasMore(newProducts.length === INITIAL_LIMIT);
+    } catch (error) {
+      console.error("Gagal memuat produk:", error);
+    } finally {
+      setIsLoading(false);
     }
-    
-    setHasMore(newProducts.length === INITIAL_LIMIT);
-    setIsLoading(false);
   };
 
-  // Pemicu saat kategori berubah
+  // Pemicu saat kategori atau `excludeSlug` berubah.
+  // Ini memastikan data awal dimuat kembali dengan filter yang benar.
   useEffect(() => {
     loadProducts(true);
-  }, [selectedCategory]);
+  }, [selectedCategory, excludeSlug]);
 
   return (
     <>

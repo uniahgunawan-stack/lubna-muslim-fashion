@@ -3,13 +3,18 @@ import { getProducts } from "@/actions/get-products";
 import { getCategory } from "@/actions/getCategory";
 import FilteredProductDisplay from "./FilterProduct";
 
-export default async function ProductSection() {
+interface ProductSectionProps {
+  currentProductSlug?: string;
+}
+
+export default async function ProductSection({ currentProductSlug }: ProductSectionProps) {
   const session = await getAuthSession();
   const userRole = session?.user?.role || "GUEST";
   const categories = await getCategory();
   
  
   const initialProducts = await getProducts({
+    excludeSlug: currentProductSlug,
     limit: 4,
   });
 
@@ -19,6 +24,7 @@ export default async function ProductSection() {
       initialProducts={initialProducts}
       userRole={userRole}
       favoriteProductIds={[]}
+      excludeSlug={currentProductSlug}
     />
   );
 }

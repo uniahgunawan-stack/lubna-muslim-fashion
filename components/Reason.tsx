@@ -15,18 +15,7 @@ const reasons = [
       "Temukan gaya unik yang memadukan tradisi dengan tren modern, dirancang khusus untuk muslimah masa kini.",
     icon: Heart,
   },
-  {
-    title: "Pengiriman Cepat & Aman",
-    description:
-      "Kami memastikan pesanan Anda tiba dengan cepat dan dalam kondisi sempurna, langsung ke pintu rumah Anda.",
-    icon: Truck,
-  },
-  {
-    title: "Jaminan Kepuasan",
-    description:
-      "Kepuasan Anda adalah prioritas kami. Kami menawarkan kebijakan pengembalian yang mudah jika Anda tidak sepenuhnya puas.",
-    icon: ShieldCheck,
-  },
+  
 ];
 
 export function Reason() {

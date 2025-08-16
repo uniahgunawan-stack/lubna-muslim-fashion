@@ -25,6 +25,7 @@ export type ProductTransformed = Omit<ProductWithDetails, 'createdAt'> & {
   createdAt: string;
   slug:string;
    avgRating: number;
+   
 };
 export async function getProducts(options?: {
   limit?: number;
@@ -33,13 +34,15 @@ export async function getProducts(options?: {
   orderDirection?: 'asc' | 'desc';
   search?: string;
   category?: string
+  excludeSlug?: string;
 }): Promise<ProductTransformed[]> { 
-  const { limit, skip, orderBy, orderDirection, search, category } = options || {};
+  const { limit, skip, orderBy, orderDirection, search, category, excludeSlug } = options || {};
 
   try {
     const product = await prisma.product.findMany({
       where: {
         isPublished: true,
+        NOT:{slug: excludeSlug},
         ...(search && {
           OR: [
             { name: { contains: search, mode: 'insensitive' } },
@@ -90,14 +93,14 @@ export async function getProducts(options?: {
   }
 }
 
-export async function getProductBySlug({id, slug}: { id?: string; slug?: string }): Promise<ProductTransformed | null> {
+export async function getProductBySlug(  slug: string ): Promise<ProductTransformed | null> {
  try {
-    if (!id && !slug) {
+    if ( !slug) {
       throw new Error("ID atau slug harus diisi.");
     }
-    const whereClause = slug ? { slug } : { id };
+    
     const product = await prisma.product.findUnique({
-      where:whereClause,
+      where:{slug},
       include: {
         images: true,
         favorites: {

@@ -20,7 +20,7 @@ export default async function DetailProductPage({
   params
 }: DetailProductPageProps) {
   const { slug } =await params;
-  const product = await getProductBySlug({slug});
+  const product = await getProductBySlug(slug);
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
@@ -101,7 +101,7 @@ ${productUrl}`;
               </span>
               <hr className="w-20 md:w-60  border-t border-gray-400"/>
             </div>
-        <ProductSection />
+        <ProductSection currentProductSlug={product.slug} />
         </section>
      {/*    <Link 
         href="/"
