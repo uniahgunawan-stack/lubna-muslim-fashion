@@ -57,7 +57,7 @@ export default function ReviewSlider({ reviews }: ReviewSliderProps) {
               {Array.from({ length: 5 }).map((_, i) => (
                 <Star
                   key={i}
-                  className={`h-5 w-5 ${
+                  className={`h-3 w-3 md:h-5 md:w-5 ${
                     i < Math.round(review.rating)
                       ? "text-yellow-400 fill-yellow-400"
                       : "text-gray-300"

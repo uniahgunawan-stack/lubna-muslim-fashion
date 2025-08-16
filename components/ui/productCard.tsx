@@ -40,9 +40,9 @@ const ProductCard: React.FC<ProductCardProps> = ({data, isInitialFavorite, userR
                         alt="Gambar product"
                         src={data?.images?.[0].url}
                         fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                        sizes="100vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
-                        priority={true}
+                        priority
                     />
                     <div onClick={handleFavoriteClick}>
                         <FavoriteButton
@@ -53,14 +53,14 @@ const ProductCard: React.FC<ProductCardProps> = ({data, isInitialFavorite, userR
                     </div>
                     {isNavigating && (
                         <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-                            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                         </div>
                     )}
                 </div>
-                <h3 className="text-lg md:text-base lg:text-lg px-2 mt-2 font-semibold text-start text-gray-900 dark:text-gray-100 line-clamp-1 hover:text-green-600 transition-colors duration-200">
+                <h3 className="text-sm md:text-base lg:text-lg px-2 mt-1 font-semibold text-start text-gray-900 dark:text-gray-100 line-clamp-1 hover:text-green-600 transition-colors duration-200">
                     {data.name}
                 </h3>
-                <div className="flex items-center px-2 gap-1">
+                <div className="flex items-center px-2 gap-0 mt-1">
                     {Array.from({ length: 5 }).map((_, i) => (
                         <Star
                             key={i}

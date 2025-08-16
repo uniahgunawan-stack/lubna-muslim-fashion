@@ -6,11 +6,12 @@ import { Button } from '../ui/button';
 
 export default async function HeroSection() {
   const banners = await getBanners();
+   const hasBanners = Array.isArray(banners) && banners.length > 0;
   return (
     <section className="bg-[radial-gradient(circle,_#FFF5E1,_#FAF9F6)] bg-background-alt-1 rounded-t-lg shadow-inner">
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-2 lg:grid-cols-2 gap-8 lg:gap-20 items-center">
-            <div className="items-center mt-0 mt:mt-4 ml-0 lg:ml-20 sm:ml-0 h-[400px] overflow-hidden md:h-[500px] lg:h-[480px]">                
-                {banners.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6 lg:gap-20 gap-y-2 items-center">
+            <div className="items-center mt-0 mt:mt-4 ml-0 lg:ml-20 sm:ml-0 h-[300px] sm:h-[420px] lg:h-[430px] overflow-hidden">                
+                {hasBanners ? (
                 <BannerSlider banners={banners} />
                   ) : (
                     <div className="bg-gray-100 dark:bg-gray-800 p-8 rounded-lg text-center text-gray-500">

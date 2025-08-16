@@ -9,6 +9,7 @@ import "swiper/css/thumbs";
 import { Button } from "../ui/button";
 import { ArrowLeft, ArrowRight, X } from "lucide-react";
 import { ProductImage } from "@/actions/get-products";
+import { products } from "@/lib/data";
 
 interface GalleryProps {
   images: ProductImage[];
@@ -45,7 +46,7 @@ const Gallery: React.FC<GalleryProps> = ({ images }) => {
               >
                 <Image
                   src={image.url}
-                  alt="Gambar produk"
+                  alt={"Gambar produk"}
                   fill
                   className="object-cover object-center"
                 />

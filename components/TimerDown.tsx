@@ -74,7 +74,7 @@ export function CountdownTimer({ className }: CountdownTimerProps) {
   intervals.forEach((interval, idx) => {
     timerComponents.push(
       <div key={interval} className="flex flex-col items-center">
-        <p className="text-2xl md:text-3xl font-bold text-red-500">
+        <p className="text-xl md:text-xl font-bold text-red-500">
           {String(timeLeft[interval as keyof TimeLeft]).padStart(2, '0')}
         </p>
         
@@ -83,7 +83,7 @@ export function CountdownTimer({ className }: CountdownTimerProps) {
 
     if (idx < intervals.length - 1) {
       timerComponents.push(
-        <span key={`colon-${idx}`} className="text-2xl font-bold text-red-500 px-1">
+        <span key={`colon-${idx}`} className="text-xl font-bold text-red-500 px-1">
           :
         </span>
       );

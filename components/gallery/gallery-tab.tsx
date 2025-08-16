@@ -19,8 +19,8 @@ const GalleryTab: React.FC<GalleryTabProps> = ({ images }) => {
             <Image
               fill
               src={images.url}
-              alt="image"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              alt={'Thumbnail produk'}
+              sizes="(max-width: 640px) 90px, 110px"
               className="object-cover"
               priority={selected}
             />

@@ -20,7 +20,7 @@ const BannerSlider: React.FC<BannerSliderProps> = ({ banners }) => {
     return null;
   }
  return(
-    <div className="px-0 relative w-full h-110 md:h-100 md:mt-4 overflow-hidden">
+    <div className="px-0 relative w-full h-[300px] md:h-[400px] md:mt-4 overflow-hidden">
       <Swiper
         modules={[Pagination, Navigation]}
         spaceBetween={0}
@@ -35,15 +35,16 @@ const BannerSlider: React.FC<BannerSliderProps> = ({ banners }) => {
         {banners.map((banner) => {
           const imageUrl =
             banner.bannerImages?.[0]?.url || "/placeholder-banner.jpg";
+            const altText = banner.description ? `Banner: ${banner.description}` : "Gambar banner promosi";
           return (
             <SwiperSlide key={banner.id} className="flex flex-col">
               <div className="relative w-full h-full">
                 <Image
                   src={imageUrl}
-                  alt={banner.description || "Banner Image"}
+                  alt={altText}
                   fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                  className=" object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                  sizes="100vw"
+                  className=" object-contain object-center group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               {banner.description && (

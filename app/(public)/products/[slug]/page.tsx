@@ -54,7 +54,7 @@ ${productUrl}`;
         </div>
 
         <section className="mt-4 bg-gray-200 rounded-t-2xl shadow-inner ">
-                  <h2 className="text-2xl mt-4 md:text-3xl font-bold text-center text-primary"> {/* Judul section gold */}
+                  <h2 className="text-xl mt-4 md:text-xl font-bold text-center text-primary"> {/* Judul section gold */}
                     Diskon Berakhir Dalam:
                   </h2>
                   <div className="mb-4">
@@ -62,7 +62,7 @@ ${productUrl}`;
                   </div>
                   </section>
 
-        <section className="container mx-auto px-4 py-2">
+        <section className="container px-4 py-2">
           <div className="bg-gradient-to-r from-gray-900 to-green-900 text-white p-6 md:p-8 rounded-lg shadow-xl text-center">
             <h2 className="text-lg md:text-xl font-bold mb-4">
               Beli Banyak Lebih Murah, Kami Melayani Grosir!
