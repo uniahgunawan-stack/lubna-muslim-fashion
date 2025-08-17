@@ -10,23 +10,33 @@ import { rP } from "@/lib/utils";
 import StickyHeader from "@/components/(tampilan)/StickyHeader";
 import ProductSection from "@/components/(public)/ProductSection";
 import { CountdownTimer } from "@/components/TimerDown";
+import { Suspense } from "react";
 
 export const revalidate = 60;
 
 interface DetailProductPageProps {
-  params: Promise<{ slug: string }>;
+  params:Promise< { slug: string }>;
 }
-export default async function DetailProductPage({
-  params
-}: DetailProductPageProps) {
-  const { slug } =await params;
-  const product = await getProductBySlug(slug);
+export default async function DetailProductPage({ params }: DetailProductPageProps) {
+  const {slug} = await params;
+  
+  return (
+    <>
+      <Suspense fallback={<div className="p-6 text-center">Memuat produk...</div>}>
+        <DetailProductContent slug={slug} />
+      </Suspense>
+      <SiteFooter />
+    </>
+  );
+}
 
+async function DetailProductContent({ slug }: { slug: string }) {
+  const product = await getProductBySlug(slug);
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
 
   if (!product) {
-    return <div>Product tidak ditemukan</div>;
+    return <div className="p-6 text-center">Produk tidak ditemukan</div>;
   }
 
   const productUrl = `${siteUrl}/products/${slug}`;
@@ -58,7 +68,9 @@ ${productUrl}`;
                     Diskon Berakhir Dalam:
                   </h2>
                   <div className="mb-4">
+               <Suspense fallback={<div className="p-4 text-center">Memuat...</div>}>
                   <CountdownTimer className="" />
+                  </Suspense>
                   </div>
                   </section>
 
@@ -101,7 +113,9 @@ ${productUrl}`;
               </span>
               <hr className="w-20 md:w-60  border-t border-gray-400"/>
             </div>
-        <ProductSection currentProductSlug={product.slug} />
+        <Suspense fallback={<div className="p-4 text-center">Memuat produk terkait...</div>}>
+              <ProductSection currentProductSlug={product.slug} />
+            </Suspense>
         </section>
      {/*    <Link 
         href="/"
@@ -113,7 +127,6 @@ ${productUrl}`;
         </Link>*/}
       </Container>
     </div>
-    <SiteFooter/>
     </>
     
   );

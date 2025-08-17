@@ -17,7 +17,7 @@ interface FilteredProductDisplayProps {
   userRole: "USER" | "ADMIN" | "GUEST";
   favoriteProductIds: string[];
   categories: Category[];
-  excludeSlug?: string; // Pastikan ini opsional, karena tidak selalu ada
+  excludeSlug?: string;
 }
 
 const INITIAL_LIMIT = 4;
@@ -32,7 +32,6 @@ export default function FilteredProductDisplay({
   const [products, setProducts] = useState<ProductTransformed[]>(initialProducts);
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isLoading, setIsLoading] = useState(false);
-  // State `skip` lebih baik daripada menghitung dari `products.length`
   const [skip, setSkip] = useState(initialProducts.length);
   const [hasMore, setHasMore] = useState(initialProducts.length === INITIAL_LIMIT);
   const [favorites, setFavorites] = useState<string[]>(favoriteProductIds);
@@ -48,7 +47,6 @@ export default function FilteredProductDisplay({
   const loadProducts = async (isNewFilter = false) => {
     setIsLoading(true);
 
-    // Tentukan jumlah yang akan dilewati berdasarkan apakah ini filter baru
     const querySkip = isNewFilter ? 0 : skip;
 
     const categoryQuery = selectedCategory === "all" ? undefined : selectedCategory;
@@ -57,7 +55,7 @@ export default function FilteredProductDisplay({
       const newProducts = await getProducts({
         limit: INITIAL_LIMIT,
         skip: querySkip,
-        excludeSlug: excludeSlug, // Ini adalah perbaikan utama!
+        excludeSlug: excludeSlug, 
         orderBy: "createdAt",
         orderDirection: "desc",
         category: categoryQuery,
@@ -65,11 +63,8 @@ export default function FilteredProductDisplay({
 
       if (isNewFilter) {
         setProducts(newProducts);
-        // Atur `skip` awal setelah filter baru
         setSkip(newProducts.length);
       } else {
-        setProducts(prevProducts => [...prevProducts, ...newProducts]);
-        // Tambahkan jumlah produk baru ke `skip` saat memuat lebih banyak
         setSkip(prevSkip => prevSkip + newProducts.length);
       }
       
@@ -80,9 +75,6 @@ export default function FilteredProductDisplay({
       setIsLoading(false);
     }
   };
-
-  // Pemicu saat kategori atau `excludeSlug` berubah.
-  // Ini memastikan data awal dimuat kembali dengan filter yang benar.
   useEffect(() => {
     loadProducts(true);
   }, [selectedCategory, excludeSlug]);

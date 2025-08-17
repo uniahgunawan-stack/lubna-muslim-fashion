@@ -15,17 +15,18 @@ const reasons = [
       "Temukan gaya unik yang memadukan tradisi dengan tren modern, dirancang khusus untuk muslimah masa kini.",
     icon: Heart,
   },
-  
+ 
 ];
+
 
 export function Reason() {
   return (
-    <section className=" md:py-8 bg-background text-foreground">
+    <section className=" md:py-8 bg-background items-center text-foreground">
       <div className="container px-2 sm:px-4 lg:px-8 mx-auto">
         <h2 className="text-lg md:text-2xl font-bold text-center mb-2">
           Mengapa Memilih Lubna Fashion?
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-2  gap-4">
           {reasons.map((reason, index) => (
             <Card
               key={index}

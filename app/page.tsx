@@ -9,6 +9,7 @@ import { Reason } from "@/components/Reason";
 import IconWhatsapp from "@/components/ui/icon-wa";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
+import { Suspense } from "react";
 
 export const revalidate = 60;
 
@@ -38,15 +39,14 @@ export default async function Home() {
         <HeroSection/>
         </div>
           <Reason/>
-          
           <section className=" py-2 md:py-4 bg-[radial-gradient(circle,_#FFF5E1,_#FAF9F6)] bg-background-alt-1"> {/* Background putih */}
           <h2 id="produk" className="text-lg md:text-xl font-bold text-center mb-2 "> {/* Judul section gold */}
             Produk Terbaru
-          </h2>          
-              <ProductSection />
+          </h2> <Suspense fallback={<p className="text-center">Memuat produk...</p>}>
+            {/* fetch data produk di belakang layar */}
+            <ProductSection />
+          </Suspense>
               </section>
-                   
-        
         </div>
         <IconWhatsapp phoneNumber={phoneNumber} message={pesan}/>
       </div>
