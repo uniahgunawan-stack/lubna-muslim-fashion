@@ -2,12 +2,24 @@
 import { ProductTransformed } from "@/actions/get-products";
 import { rP } from "@/lib/utils";
 import { Star } from "lucide-react";
+import WhatsAppButton from "../WhatsAppButton";
+import { FaWhatsapp } from "react-icons/fa";
+import { Cal_Sans } from "next/font/google";
 
 interface ProductInfoProps {
   product: ProductTransformed;
 }
 
 export default function ProductInfo({ product }: ProductInfoProps) {
+
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "";
+  const phoneNumber = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "";
+   const productUrl = `${siteUrl}/products/${product.slug}`;
+  const whatsappMessage = `Halo, saya tertarik dengan produk ${
+    product.name
+  } ❤️ yang Anda jual seharga Rp ${rP(product.price)}.
+Apakah produk ini masih tersedia? Cek produk:
+${productUrl}`;
   return (
     <div className="space-y-2 border-b">
       <h1 className="text-xl mt-4 font-bold line-clamp-1 md:line-clamp-2">{product.name}</h1>
@@ -44,6 +56,15 @@ export default function ProductInfo({ product }: ProductInfoProps) {
           </span>
         )}
       </div>
+      <div className="hidden md:block" >
+      <WhatsAppButton 
+                className=" mt-4 bg-green-700 hover:bg-gradient-to-r hover:from-black hover:to-green-500"
+                phoneNumber={phoneNumber}
+                message={whatsappMessage}
+              >
+               <FaWhatsapp className="h-8 w-8" /> Order Via WhatsApp
+              </WhatsAppButton>
+              </div>
      <p className=" text-xl border-t-1 py-2 text-green-700 font-bold">Deskripsi produk :</p>
       <p className="text-gray-500 leading-relaxed whitespace-pre-wrap">{product.description}</p>
       </div>    

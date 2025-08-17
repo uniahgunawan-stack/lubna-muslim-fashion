@@ -28,7 +28,7 @@ const WhatsAppButton: React.FC<WhatsAppButtonProps> = ({
   return (
     <Button
       onClick={handleClick}
-      className={cn("bg-gradient-to-r from-black/70 to-amber-300 !text-white hover:from-amber-500 hover:to-black transition-all duration-300", className)}
+      className={cn("bg-gradient-to-r from-black to-amber-300 !text-white hover:from-amber-500 hover:to-black transition-all duration-300", className)}
       variant={variant}
       size={size}
       {...props}

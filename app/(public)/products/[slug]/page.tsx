@@ -47,11 +47,13 @@ Apakah produk ini masih tersedia? Cek produk:
 ${productUrl}`;
   return (
     <>
+    <div className="md:hidden">
     <StickyHeader
         productName={product.name}
         phoneNumber={phoneNumber}
         whatsappMessage={whatsappMessage}
       />
+      </div>
     <div className="bg-white">
       <Container> 
         <div className="py-0 md:py-10">      
